@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: jy-gpu-plugin
+  namespace: kube-system
+  labels:
+    app: jy-gpu-plugin
+spec:
+  selector:
+    matchLabels:
+      app: jy-gpu-plugin
+  template:
+    metadata:
+      labels:
+        app: jy-gpu-plugin
+    spec:
+      containers:
+        - name: jy-gpu-plugin
+          image: registry.cn-shanghai.aliyuncs.com/casoul1/jy-gpu-plugin:v20250309:latest
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            privileged: true  # 启用特权模式[6](@ref)
+            capabilities:
+              add: ["SYS_RAWIO", "MKNOD"]  # 添加设备操作权限[4](@ref)
+          resources:
+            limits:
+              cpu: "1"
+              memory: "512Mi"
+            requests:
+              cpu: "0.1"
+              memory: "128Mi"
+          volumeMounts:
+            - name: device-plugin
+              mountPath: /var/lib/kubelet/device-plugins
+            - name: dev
+              mountPath: /dev
+      volumes:
+        - name: device-plugin
+          hostPath:
+            path: /var/lib/kubelet/device-plugins
+        - name: dev
+          hostPath:
+            path: /dev

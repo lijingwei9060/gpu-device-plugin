@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: python-with-dependencies
+spec:
+  containers:
+    - name: python
+      image: docker.io/library/py310-with-dependencies:v20250305
+      command: ["sh", "-c", "env && sleep 3600"]
+      resources:
+        requests:
+          jiangyuan.com/gpu: "1"
+        limits:
+          jiangyuan.com/gpu: "1"
+      volumeMounts:
+          - name: data
+            mountPath: /root/data
+  volumes:
+    - name: data
+      hostPath:
+        path: /root/data
