@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: jy-gpu-plugin
-          image: registry.cn-shanghai.aliyuncs.com/casoul1/jy-gpu-plugin:v20250309:latest
+          image: registry.cn-shanghai.aliyuncs.com/casoul1/jy-gpu-plugin:v20250309
           imagePullPolicy: IfNotPresent
           securityContext:
             privileged: true  # 启用特权模式[6](@ref)
